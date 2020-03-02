@@ -4,6 +4,13 @@
     "runtime-version": "19.08",
     "sdk": "org.freedesktop.Sdk",
     "command": "pwsh",
+    "finish-args": [
+        "--share=network",
+        "--filesystem=host",
+        "--device=all",
+        "--share=ipc",
+        "--device=all"
+    ],
     "modules": [
         {
             "name": "powershell",
