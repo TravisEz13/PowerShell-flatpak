@@ -1,0 +1,30 @@
+{
+    "app-id": "com.microsoft.powershell",
+    "runtime": "org.freedesktop.Platform",
+    "runtime-version": "19.08",
+    "sdk": "org.freedesktop.Sdk",
+    "command": "pwsh",
+    "modules": [
+        {
+            "name": "powershell",
+            "buildsystem": "simple",
+            "build-commands": [
+                "echo $PWD/pwsh",
+                "install -d /app/bin",
+                "install -d /app/opt/microsoft/powershell/",
+                "cp -ar $PWD/* /app/opt/microsoft/powershell/",
+                "chmod a+x /app/opt/microsoft/powershell/pwsh",
+                "ls -l $PWD/pwsh",
+                "ln -s /app/opt/microsoft/powershell/pwsh /app/bin/pwsh",
+                "ls -l /app/bin/*"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://github.com/PowerShell/PowerShell/releases/download/v6.2.4/powershell-6.2.4-linux-x64.tar.gz",
+                    "sha256": "be349b9a2244ac06bc6a6e694434cae13af696ea42eb47e8ad1ad39354a2d039"
+                }
+            ]
+        }
+    ]
+}
