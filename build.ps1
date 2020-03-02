@@ -20,7 +20,8 @@ if ($Build.IsPresent) {
     Push-Location
     Set-Location $PSScriptRoot
     try {
-        sudo flatpak-builder --verbose ./build-dir com.microsoft.powershell.json --force-clean
+        sudo flatpak-builder --verbose ./build-dir com.microsoft.powershell.json --force-clean --repo=repo
+        flatpak build-bundle -v ./repo powershell.flatpak com.microsoft.powershell
     }
     finally {
         pop-location

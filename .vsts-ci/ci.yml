@@ -51,3 +51,12 @@ stages:
         ./build.ps1 -Build
       displayName: build flatpak
 
+    - pwsh: |
+        Get-ChildItem '.\*.flatpak' -recurse | ForEach-Object {
+          $packagePath = $_.FullName
+          Write-Host "Uploading $packagePath"
+          Write-Host "##vso[artifact.upload containerfolder=signed;artifactname=signed]$packagePath"
+        }
+      displayName: Upload artifacts
+
+
