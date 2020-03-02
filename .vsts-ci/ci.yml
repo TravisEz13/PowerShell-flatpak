@@ -55,7 +55,7 @@ stages:
         Get-ChildItem '.\*.flatpak' -recurse -ErrorAction Ignore | ForEach-Object {
           $packagePath = $_.FullName
           Write-Host "Uploading $packagePath"
-          Write-Host "##vso[artifact.upload containerfolder=signed;artifactname=signed]$packagePath"
+          Write-Host "##vso[artifact.upload containerfolder=flatpak;artifactname=flatpak]$packagePath"
         }
       displayName: Upload artifacts
 
