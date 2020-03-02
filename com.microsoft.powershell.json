@@ -6,10 +6,7 @@
     "command": "pwsh",
     "finish-args": [
         "--share=network",
-        "--filesystem=host",
-        "--device=all",
-        "--share=ipc",
-        "--device=all"
+        "--filesystem=host"
     ],
     "modules": [
         {
