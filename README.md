@@ -9,3 +9,8 @@ A very early prototype of packaging PowerShell in flatpak
 1. Run `./build.ps1 -Bootstrap`
    * This should only need to be done once.
 1. Run `./build.ps1 -Build`
+
+## Installation
+
+1. Install flatpak - https://flatpak.org/setup/
+1. `flatpak install ./powershell.flatpak`
