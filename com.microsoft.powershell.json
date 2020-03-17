@@ -25,8 +25,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://github.com/PowerShell/PowerShell/releases/download/v6.2.4/powershell-6.2.4-linux-x64.tar.gz",
-                    "sha256": "be349b9a2244ac06bc6a6e694434cae13af696ea42eb47e8ad1ad39354a2d039"
+                    "url": "https://github.com/PowerShell/PowerShell/releases/download/v7.0.0/powershell-7.0.0-linux-x64.tar.gz",
+                    "sha256": "3e80a662a5defb283185961330c4a44d5d5179f9eb2a2ee74ac7e1d3caf16b2c"
                 }
             ]
         }
