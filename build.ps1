@@ -31,7 +31,7 @@ $packageUrl = "https://github.com/PowerShell/PowerShell/releases/download/v$vers
 
 if ($Bootstrap.IsPresent) {
     sudo apt update
-    sudo apt install flatpak flatpak-builder
+    sudo apt install -y flatpak flatpak-builder
     sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     sudo flatpak -y install flathub org.freedesktop.Platform//19.08 org.freedesktop.Sdk//19.08
 }
