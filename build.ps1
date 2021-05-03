@@ -6,8 +6,10 @@ param(
 
     [Parameter(Mandatory, ParameterSetName = 'Build')]
     [switch] $Build,
-    [Parameter(ParameterSetName = 'Build')]
-    [switch] $Run
+    [Parameter(Mandatory, ParameterSetName = 'Run')]
+    [switch] $Run,
+    [Parameter()]
+    [ValidateSet('Stable','Preview','Servicing')][string] $Release = 'Stable'
 )
 
 if (!$IsLinux) {
@@ -16,7 +18,14 @@ if (!$IsLinux) {
 
 $metadataUrl = 'https://raw.githubusercontent.com/PowerShell/PowerShell/master/tools/metadata.json'
 $metadata = Invoke-RestMethod -Uri $metadataUrl
-$stableReleaseTag = $metadata.StableReleaseTag
+
+switch ($Release) {
+    'Stable'{$ReleaseTag = $metadata.StableReleaseTag}
+    'Preview'{$ReleaseTag = $metadata.PreviewReleaseTag}
+    'Servicing'{$ReleaseTag = $metadata.ServicingReleaseTag}
+    default {throw "Incorrect Release Specified: $Release"}
+}
+
 $version = $stableReleaseTag -replace '^v'
 $packageUrl = "https://github.com/PowerShell/PowerShell/releases/download/v$version/powershell-$version-linux-x64.tar.gz"
 
@@ -30,6 +39,24 @@ if ($Bootstrap.IsPresent) {
 if ($Build.IsPresent) {
     Push-Location
     Set-Location $PSScriptRoot
+
+    try {
+        Invoke-WebRequest -Uri $packageUrl -OutFile "/tmp/powershell-$version-linux-x64.tar.gz" -ErrorAction Stop
+        $ReleaseHash = (Get-FileHash -Algorithm SHA256 -Path "/tmp/powershell-$version-linux-x64.tar.gz" -ErrorAction Stop | Select-Object -ExpandProperty Hash).ToLower()
+    }
+    catch {
+        throw 
+    }
+    
+    $packageJson = Get-Content -Raw -Path "$PSScriptRoot/com.microsoft.powershell.json" | ConvertFrom-Json -Depth 100
+
+    #Update Package URL and Hash
+    $packageJson.modules.sources.url    = $packageUrl
+    $packageJson.modules.sources.sha256 = $ReleaseHash
+
+    #Update Flatpak JSON file 
+    $packageJson | ConvertTo-Json -Depth 100 | Set-Content -Path "$PSScriptRoot/com.microsoft.powershell.json" -Force
+
     try {
         sudo flatpak-builder --verbose ./build-dir com.microsoft.powershell.json --force-clean --repo=repo
         flatpak build-bundle -v ./repo powershell.flatpak com.microsoft.powershell
