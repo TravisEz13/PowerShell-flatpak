@@ -26,7 +26,7 @@ switch ($Release) {
     default {throw "Incorrect Release Specified: $Release"}
 }
 
-$version = $stableReleaseTag -replace '^v'
+$version = $ReleaseTag -replace '^v'
 $packageUrl = "https://github.com/PowerShell/PowerShell/releases/download/v$version/powershell-$version-linux-x64.tar.gz"
 
 if ($Bootstrap.IsPresent) {
