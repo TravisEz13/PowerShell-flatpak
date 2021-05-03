@@ -30,8 +30,24 @@ $version = $stableReleaseTag -replace '^v'
 $packageUrl = "https://github.com/PowerShell/PowerShell/releases/download/v$version/powershell-$version-linux-x64.tar.gz"
 
 if ($Bootstrap.IsPresent) {
-    sudo apt update
-    sudo apt install -y flatpak flatpak-builder
+    #Get Linux System Information
+    $LinuxInfo = Get-Content /etc/os-release | ConvertFrom-StringData
+    $Environment = [PSCustomObject]@{
+        IsUbuntu            = $LinuxInfo.Id -match 'ubuntu'
+        IsCentOS            = $LinuxInfo.Id -match 'centos'
+        IsFedora            = $LinuxInfo.Id -match 'fedora'
+        IsOpenSUSE          = $LinuxInfo.Id -match 'opensuse'
+    }
+
+    if($Environment.IsUbuntu){
+        sudo apt update
+        sudo apt install -y flatpak flatpak-builder
+    }
+    elseif($Environment.IsFedora){
+        sudo dnf check-update
+        sudo dnf -y install flatpak flatpak-builder
+    }
+    
     sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     sudo flatpak -y install flathub org.freedesktop.Platform//20.08 org.freedesktop.Sdk//20.08
 }
