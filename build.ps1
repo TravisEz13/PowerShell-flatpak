@@ -33,7 +33,7 @@ if ($Bootstrap.IsPresent) {
     sudo apt update
     sudo apt install -y flatpak flatpak-builder
     sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    sudo flatpak -y install flathub org.freedesktop.Platform//19.08 org.freedesktop.Sdk//19.08
+    sudo flatpak -y install flathub org.freedesktop.Platform//20.08 org.freedesktop.Sdk//20.08
 }
 
 if ($Build.IsPresent) {
