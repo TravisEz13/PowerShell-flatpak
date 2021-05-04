@@ -6,6 +6,10 @@ param(
 
     [Parameter(Mandatory, ParameterSetName = 'Build')]
     [switch] $Build,
+    [Parameter(Mandatory, ParameterSetName = 'Install')]
+    [switch] $Install,
+    [Parameter(Mandatory, ParameterSetName = 'Uninstall')]
+    [switch] $Uninstall,
     [Parameter(Mandatory, ParameterSetName = 'Run')]
     [switch] $Run,
     [Parameter()]
@@ -76,6 +80,32 @@ if ($Build.IsPresent) {
     try {
         sudo flatpak-builder --verbose ./build-dir com.microsoft.powershell.json --force-clean --repo=repo
         flatpak build-bundle -v ./repo powershell.flatpak com.microsoft.powershell
+    }
+    finally {
+        pop-location
+    }
+}
+
+If ($Install.IsPresent) {
+    Push-Location
+    Set-Location $PSScriptRoot
+
+    if(Test-Path -Path "$PSScriptRoot/powershell.flatpak"){
+        try {
+            sudo flatpak install -y powershell.flatpak
+        }
+        finally {
+            pop-location
+        }
+    }
+}
+
+If ($Uninstall.IsPresent) {
+    Push-Location
+    Set-Location $PSScriptRoot
+
+    try {
+        sudo flatpak uninstall -y powershell
     }
     finally {
         pop-location
