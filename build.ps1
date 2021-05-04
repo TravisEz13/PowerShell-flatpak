@@ -51,6 +51,10 @@ if ($Bootstrap.IsPresent) {
         sudo dnf check-update
         sudo dnf -y install flatpak flatpak-builder
     }
+    elseif($Environment.IsOpenSUSE){
+        sudo zypper refresh
+        sudo zypper -n install flatpak flatpak-builder
+    }
     
     sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     sudo flatpak -y install flathub org.freedesktop.Platform//20.08 org.freedesktop.Sdk//20.08
