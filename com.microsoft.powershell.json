@@ -16,10 +16,15 @@
                 "echo $PWD/pwsh",
                 "install -d /app/bin",
                 "install -d /app/opt/microsoft/powershell/",
-                "cp -ar $PWD/* /app/opt/microsoft/powershell/",
-                "chmod a+x /app/opt/microsoft/powershell/pwsh",
+                "find . -type f -name \\pwsh -exec install -Dm 755 '{}' '/app/opt/microsoft/powershell/{}' \\;",
+                "find . -type f -name \\createdump -exec install -Dm 644 '{}' '/app/opt/microsoft/powershell/{}' \\;",
+                "find . -type f -name \\*.dll -exec install -Dm 644 '{}' '/app/opt/microsoft/powershell/{}' \\;",
+                "find . -type f -name \\*.so -exec install -Dm 644 '{}' '/app/opt/microsoft/powershell/{}' \\;",
+                "find . -type f -name \\*.json -exec install -Dm 644 '{}' '/app/opt/microsoft/powershell/{}' \\;",
+                "find . -type f -name \\*.txt -exec install -Dm 644 '{}' '/app/opt/microsoft/powershell/{}' \\;",
+                "find . -type f -name \\*.xml -exec install -Dm 644 '{}' '/app/opt/microsoft/powershell/{}' \\;",
                 "ls -l $PWD/pwsh",
-                "ln -s /app/opt/microsoft/powershell/pwsh /app/bin/pwsh",
+                "ln -sf /app/opt/microsoft/powershell/pwsh /app/bin/pwsh",
                 "ls -l /app/bin/*"
             ],
             "sources": [
